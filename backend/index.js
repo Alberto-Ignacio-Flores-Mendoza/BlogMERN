@@ -29,7 +29,7 @@ app.use(cookieParser())
 app.use(helmet());
 //app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 //app.use(morgan("common"));
-app.use(cors({origin:"https://651b64a67d931007093b2bde--phenomenal-puffpuff-6742f1.netlify.app/",credentials:true}))
+app.use(cors({origin:"http://localhost:5173",credentials:true}))
 
 
 const storage = multer.diskStorage({
