@@ -22,7 +22,6 @@ const __dirname = path.dirname(__filename);
 //get our .env variables
 dotenv.config();
 
-app.use(cors({origin:"http://localhost:5173",credentials:true}))
 
 //so we can access the req.body
 app.use(express.json())
@@ -30,6 +29,8 @@ app.use(cookieParser())
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
+app.use(cors())
+
 
 const storage = multer.diskStorage({
   destination:(req,file,fn)=>{
