@@ -26,9 +26,11 @@ dotenv.config();
 //so we can access the req.body
 app.use(express.json())
 app.use(cookieParser())
-app.use(helmet());
+//app.use(helmet());
 //app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 //app.use(morgan("common"));
+app.use("/images", express.static(path.join(__dirname, "images")))
+
 app.use(cors({origin:"http://localhost:5173",credentials:true}))
 
 
@@ -48,7 +50,6 @@ app.post("/api/upload", upload.single("file"),(req,res)=>{
   res.status(200).json("Image has been uploaded successfully")
 })
 
-app.use("/images", express.static(path.join(__dirname, "images")))
 
 // more middleware
 app.use("/api/auth", authRoute)
