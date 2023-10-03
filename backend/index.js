@@ -31,7 +31,8 @@ app.use(cookieParser())
 //app.use(morgan("common"));
 app.use("/images", express.static(path.join(__dirname, "images")))
 
-app.use(cors({origin:"https://651b766f51c60212eb4aaeb8--timely-klepon-a5dfe4.netlify.app",credentials:true}))
+app.use(cors({origin:"https://651b766f51c60212eb4aaeb8--timely-klepon-a5dfe4.netlify.app",credentials:true, 	exposedHeaders:["Set-cookie"],
+}))
 
 
 const storage = multer.diskStorage({
