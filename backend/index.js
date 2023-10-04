@@ -1,4 +1,5 @@
 import express from "express"
+import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoute from './routes/auth.js'
@@ -13,10 +14,11 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { fileURLToPath } from "url";
 
+//Configurations
+
 const app= express()
 
 const __filename = fileURLToPath(import.meta.url);
-
 const __dirname = path.dirname(__filename);
 
 //get our .env variables
@@ -25,15 +27,18 @@ dotenv.config();
 
 //so we can access the req.body
 app.use(express.json())
-app.use(cookieParser())
-//app.use(helmet());
-//app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-//app.use(morgan("common"));
+//app.use(cookieParser())
+app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+app.use(morgan("common"));
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(cors());
 app.use("/images", express.static(path.join(__dirname, "images")))
 
-app.use(cors({origin:"https://651b766f51c60212eb4aaeb8--timely-klepon-a5dfe4.netlify.app",credentials:true, 	exposedHeaders:["Set-cookie"],
-}))
 
+
+//File Storage
 
 const storage = multer.diskStorage({
   destination:(req,file,fn)=>{

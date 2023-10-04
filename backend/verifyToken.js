@@ -1,24 +1,22 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+ const verifyToken = async (req, res, next) => {
+  try {
+    let token = req.header("Authorization");
 
-
-const verifyToken=(req,res,next)=>{
-    const token=req.cookies.token
-    // console.log(token)
-    if(!token){
-        return res.status(401).json("You are not authenticated!")
+    if (!token) {
+      return res.status(403).send("Access Denied");
     }
 
-    jwt.verify(token, process.env.SECRET, async (err,data)=>{
-        if(err){
-            return res.status(403).json("Token is not valid!")
-        }
-        
-        req.userId=data._id
-       
-        // console.log("passed")
-        
-        next()
-    })
-}
+    if (token.startsWith("Bearer ")) {
+      token = token.slice(7, token.length).trimLeft();
+    }
+
+    const verified = jwt.verify(token, process.env.SECRET);
+    req.user = verified;
+    next();
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 export default verifyToken

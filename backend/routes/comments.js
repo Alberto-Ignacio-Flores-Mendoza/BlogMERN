@@ -8,16 +8,19 @@ import verifyToken from "../verifyToken.js"
 
 
 //CREATE
-router.post("/create",verifyToken,async (req,res)=>{
+router.post("/create", verifyToken , async (req,res)=>{
     try{
         const newComment=new Comment(req.body)
+        console.log(`This is the body ${req.body}`)
         const savedComment=await newComment.save()
+        console.log("2")
+
         res.status(200).json(savedComment)
     }
     catch(err){
         res.status(500).json(err)
     }
-     
+    
 })
 
 //UPDATE
@@ -35,11 +38,11 @@ router.put("/:id", verifyToken, async (req,res)=>{
 
 
 //DELETE
-router.delete("/:id",verifyToken,async (req,res)=>{
+router.delete("/:id", verifyToken, async (req,res)=>{
     try{
-        await Comment.findByIdAndDelete(req.params.id)
+        const comment = await Comment.findByIdAndDelete(req.params.id)
         
-        res.status(200).json("Comment has been deleted!")
+        res.status(200).json(comment)
 
     }
     catch(err){

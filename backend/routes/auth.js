@@ -3,6 +3,7 @@ const router= express.Router()
 import User from '../models/User.js'
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
+import verifyToken from '../verifyToken.js'
 
 
 //Resgister new user
@@ -42,7 +43,9 @@ router.post("/login",async (req,res)=>{
         }
         const token=jwt.sign({_id:user._id,username:user.username,email:user.email},process.env.SECRET,{expiresIn:"3d"})
         const {password,...info}=user._doc
-        res.cookie("token",token).status(200).json(info)
+        res.status(200).json({ token, user });
+
+       // res.cookie("token",token).status(200).json(info)
 
     }
     catch(error){
@@ -59,15 +62,29 @@ router.get("/logout",async (req,res)=>{
     }
 })
 
-router.get("/refetch", (req,res)=>{
-    const token= req.cookies.token
-    jwt.verify(token, process.env.SECRET, {}, async(error,data)=>{
-        if(error){
-            return res.status(404).json(err)
-        }
+ router.get("/refetch",(req,res)=>{
+    //const token= req.cookies.token
+    try{
+    let token = req.header("Authorization");
+
+    if (!token) {
+      return res.status(403).send("Access Denied");
+    }
+
+    if (token.startsWith("Bearer ")) {
+      token = token.slice(7, token.length).trimStart();
+    }
+
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verified;
 
         res.status(200).json(data)
-    })
-})
+    }
+    catch(error){
+            res.status(500).json({ error: error.message });
+
+    }
+    
+}) 
 
 export default router
