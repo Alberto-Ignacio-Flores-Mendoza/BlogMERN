@@ -5,10 +5,11 @@ import mongoose from "mongoose";
 import authRoute from './routes/auth.js'
 import userRoute from './routes/users.js'
 import postRoute from './routes/posts.js'
+import imagesRoutes from "./routes/imagesRoutes.js"
 import commentRoute from './routes/comments.js'
 import cors from "cors"
 import cookieParser from "cookie-parser"
-import multer from "multer"
+//import multer from "multer"
 import path from "path";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -34,12 +35,14 @@ app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+
+
 app.use("/images", express.static(path.join(__dirname, "images")))
 
 
 
 //File Storage
-
+/* 
 const storage = multer.diskStorage({
   destination:(req,file,fn)=>{
     fn(null, "images")
@@ -50,18 +53,21 @@ const storage = multer.diskStorage({
 })
 
 //for image upload
-const upload=multer({storage:storage})
+const upload=multer({storage:storage}) */
 
+/* 
 app.post("/api/upload", upload.single("file"),(req,res)=>{
   res.status(200).json("Image has been uploaded successfully")
 })
-
+ */
 
 // more middleware
 app.use("/api/auth", authRoute)
 app.use("/api/users", userRoute)
 app.use("/api/posts", postRoute)
 app.use("/api/comments", commentRoute)
+app.use('/api/images', imagesRoutes)
+
 
 
 
