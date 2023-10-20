@@ -22,9 +22,20 @@ router.post("/register", async (req,res)=>{
 
 
     } catch (error) {
-        if(error.code === 11000){
+      if(error.code === 11000){
+
+            if(error.keyPattern.username === 1 )
+            {
+                console.log("Duplicate usernames")
+            }
+
+            if(error.keyPattern.email === 1 )
+            {
+                console.log("Duplicate email")
+            }
+
             console.log(error)
-          return res.status(400).send('Email already exists')  
+            return res.status(400).send('Email already exists')
         } 
         res.status(500).send(error.message)
     }
