@@ -26,16 +26,14 @@ router.post("/register", async (req,res)=>{
 
             if(error.keyPattern.username === 1 )
             {
-                console.log("Duplicate usernames")
+                return res.status(400).send('Username already taken')
             }
 
             if(error.keyPattern.email === 1 )
             {
-                console.log("Duplicate email")
+                return res.status(400).send('Email already taken')
             }
 
-            console.log(error)
-            return res.status(400).send('Email already exists')
         } 
         res.status(500).send(error.message)
     }
