@@ -26,12 +26,12 @@ router.post("/register", async (req,res)=>{
 
             if(error.keyPattern.username === 1 )
             {
-                return res.status(400).send('Username already taken')
+                return res.status(400).json('Username already taken')
             }
 
             if(error.keyPattern.email === 1 )
             {
-                return res.status(400).send('Email already taken')
+                return res.status(400).json('Email already taken')
             }
 
         } 
